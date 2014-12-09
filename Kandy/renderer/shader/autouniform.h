@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include <boost\shared_ptr.hpp>
-#include <Kandy\renderer\drawstate.h>
+#include <Kandy\renderer\renderstate.h>
 #include <Kandy\scene\scenestate.h>
 
 namespace Kandy

@@ -12,14 +12,14 @@ namespace Kandy
     */
     struct VertexDeclaration
     {
-      // Constructor(s) will compute the vertex stride based on the elements contained within.
+      // Constructor will compute the vertex stride based on the elements contained within.
       VertexDeclaration(const VertexElement elements[], size_t count);
-      VertexDeclaration(const std::vector<VertexElement> elements);
 
       // Number of bytes from one vertex to the next.
       const unsigned int                Stride;
 
-      const std::vector<VertexElement>  Elements;
+      const VertexElement* const  Elements;
+      const size_t                ElementCount;
     };
   }
 }

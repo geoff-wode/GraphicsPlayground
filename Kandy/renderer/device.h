@@ -4,7 +4,7 @@
 #include <boost\noncopyable.hpp>
 #include <Kandy\renderer\clearstate.h>
 #include <Kandy\renderer\pipelinestate.h>
-#include <Kandy\renderer\drawstate.h>
+#include <Kandy\renderer\renderstate.h>
 #include <Kandy\renderer\shader\autouniform.h>
 
 namespace Kandy

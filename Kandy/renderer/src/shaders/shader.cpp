@@ -12,7 +12,7 @@
 #include <renderer\shader\uniformtypes\all.h>
 #include <renderer\shader\vertexattribute.h>
 
-#include "gl_core_3_3.hpp"
+#include <renderer\src\gl_core_3_3.hpp>
 
 using namespace Kandy;
 using namespace Kandy::Renderer;

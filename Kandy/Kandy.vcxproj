@@ -39,7 +39,7 @@
     <ClInclude Include="renderer\buffers\vertexbuffer.h" />
     <ClInclude Include="renderer\clearstate.h" />
     <ClInclude Include="renderer\device.h" />
-    <ClInclude Include="renderer\drawstate.h" />
+    <ClInclude Include="renderer\renderstate.h" />
     <ClInclude Include="renderer\pipelinestate.h" />
     <ClInclude Include="renderer\shader.h" />
     <ClInclude Include="renderer\shader\autouniform.h" />

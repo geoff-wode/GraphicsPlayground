@@ -5,11 +5,11 @@ using namespace Kandy::Renderer;
 
 //------------------------------------------------------
 
-static unsigned int ComputeStride(const std::vector<VertexElement>& elements)
+static unsigned int ComputeStride(const VertexElement elements[], size_t count)
 {
   unsigned int stride = 0;
 
-  for (size_t i = 0; i < elements.size(); ++i)
+  for (size_t i = 0; i < count; ++i)
   {
     stride += elements[i].Size;
   }
@@ -20,16 +20,8 @@ static unsigned int ComputeStride(const std::vector<VertexElement>& elements)
 //------------------------------------------------------
 
 VertexDeclaration::VertexDeclaration(const VertexElement elements[], size_t count)
-  : Elements(elements, elements + count),
-    Stride(ComputeStride(Elements))
-{
-}
-
-//------------------------------------------------------
-
-VertexDeclaration::VertexDeclaration(const std::vector<VertexElement> elements)
   : Elements(elements),
-    Stride(ComputeStride(Elements))
+    ElementCount(count),
+    Stride(ComputeStride(Elements, count))
 {
 }
-

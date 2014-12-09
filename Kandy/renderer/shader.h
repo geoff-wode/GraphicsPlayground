@@ -9,7 +9,7 @@
 #include <Kandy\renderer\shader\uniformobserver.h>
 #include <Kandy\renderer\shader\autouniform.h>
 #include <Kandy\scene\scenestate.h>
-#include <Kandy\renderer\drawstate.h>
+#include <Kandy\renderer\renderstate.h>
 
 namespace Kandy
 {

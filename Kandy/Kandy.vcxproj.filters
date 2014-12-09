@@ -86,9 +86,6 @@
     <ClInclude Include="core\resourceloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\drawstate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderer\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -156,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="renderer\src\buffers\bufferusage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\renderstate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

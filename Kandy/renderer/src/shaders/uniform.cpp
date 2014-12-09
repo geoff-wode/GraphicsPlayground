@@ -1,5 +1,5 @@
 #include <Kandy\renderer\shader\uniform.h>
-#include "gl_core_3_3.hpp"
+#include <renderer\src\gl_core_3_3.hpp>
 
 using namespace Kandy;
 using namespace Kandy::Renderer;
