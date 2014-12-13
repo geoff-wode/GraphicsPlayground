@@ -11,7 +11,7 @@
 #include <renderer\shader.h>
 #include <renderer\shader\uniformtypes\all.h>
 #include <renderer\shader\vertexattribute.h>
-
+#include <renderer\src\typeconversion.h>
 #include <renderer\src\gl_core_3_3.hpp>
 
 using namespace Kandy;
@@ -72,7 +72,8 @@ Shader::Ptr Shader::Create(const char* const vsSrc, const char* const fsSrc)
 
 Shader::Shader()
   : Uniforms(uniforms),
-    program(gl::CreateProgram())
+    program(gl::CreateProgram()),
+    Attributes(attributes)
 {
 }
 
@@ -85,7 +86,7 @@ Shader::~Shader()
 
 //--------------------------------------------------------------
 
-void Shader::Activate()
+void Shader::Use()
 {
   gl::UseProgram(program);
 }
@@ -94,9 +95,9 @@ void Shader::Activate()
 
 void Shader::UpdateUniforms()
 {
-  for (size_t i = 0; i < changedUniforms.size(); ++i)
+  BOOST_FOREACH(auto uniform, changedUniforms)
   {
-    changedUniforms[i]->Update();
+    uniform->Update();
   }
   changedUniforms.clear();
 }
@@ -161,15 +162,15 @@ bool Shader::GetUniforms()
   changedUniforms.reserve(uniformCount);
 
   // Hook in any automatic uniforms...
-  BOOST_FOREACH(UniformSetPair u, uniforms)
+  BOOST_FOREACH(auto uniform, uniforms)
   {
     // Note that ".at()" below will throw if the key is not found. I _hate_ exception
     // programming but this wraps up the search and retrieval into a single call, so I'm
     // being pragmatic (but still need a shower)...
     try
     {
-      AutoUniform::Factory::Ptr factory = Device::GetAutoUniformFactories().at(u.first);
-      automaticUniforms.push_back(factory->Create(u.second));
+      AutoUniform::Factory::Ptr factory = Device::GetAutoUniformFactories().at(uniform.first);
+      automaticUniforms.push_back(factory->Create(uniform.second));
     }
     catch(const std::out_of_range& e)
     {
@@ -182,11 +183,46 @@ bool Shader::GetUniforms()
 
 //--------------------------------------------------------------
 
+void Shader::GetAttributes()
+{
+  int attrCount;
+  gl::GetProgramiv(program, gl::ACTIVE_ATTRIBUTES, &attrCount);
+
+  int attrMaxNameLength;
+  gl::GetProgramiv(program, gl::ACTIVE_ATTRIBUTE_MAX_LENGTH, &attrMaxNameLength);
+  std::vector<GLchar> attrName(attrMaxNameLength + 1);
+
+  for (int i = 0; i < attrCount; ++i)
+  {
+    int attrNameLength;
+    int componentCount;
+    GLenum type;
+    gl::GetActiveAttrib(program, i, attrMaxNameLength,
+      &attrNameLength, &componentCount, &type, attrName.data());
+
+    // Ignore built in OpenGL attributes - they all have location == -1...
+    if (0 != strcmp("gl_", attrName.data()))
+    {
+      const int location = gl::GetAttribLocation(program, attrName.data());
+      ShaderVertexAttribute attr =
+      {
+        (const char*)attrName.data(),
+        componentCount,
+        location,
+        ConvertShaderVertexAttributeType(type)
+      };
+      attributes[attr.Name] = attr;
+    }
+  }
+}
+
+//--------------------------------------------------------------
+
 void Shader::UpdateAutoUniforms(const PipelineState& pipelineState, const Scene::SceneState& sceneState)
 {
-  for (size_t i = 0; i < automaticUniforms.size(); ++i)
+  BOOST_FOREACH(auto uniform, automaticUniforms)
   {
-    automaticUniforms[i]->Set(pipelineState, sceneState);
+    uniform->Set(pipelineState, sceneState);
   }
 }
 

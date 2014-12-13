@@ -56,6 +56,7 @@
     <ClInclude Include="renderer\shader\vertexattribute.h" />
     <ClInclude Include="renderer\src\buffers\bufferusage.h" />
     <ClInclude Include="renderer\src\gl_core_3_3.hpp" />
+    <ClInclude Include="renderer\src\typeconversion.h" />
     <ClInclude Include="renderer\vertexdeclaration.h" />
     <ClInclude Include="renderer\vertexelement.h" />
     <ClInclude Include="renderer\vertexpositiontexture.h" />

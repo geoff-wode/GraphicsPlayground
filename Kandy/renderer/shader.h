@@ -8,6 +8,7 @@
 #include <Kandy\renderer\shader\uniform.h>
 #include <Kandy\renderer\shader\uniformobserver.h>
 #include <Kandy\renderer\shader\autouniform.h>
+#include <Kandy\renderer\shader\vertexattribute.h>
 #include <Kandy\scene\scenestate.h>
 #include <Kandy\renderer\renderstate.h>
 
@@ -24,23 +25,29 @@ namespace Kandy
       ~Shader();
 
       typedef std::pair<const std::string, Uniform::Ptr> UniformSetPair;
-      typedef std::map<const std::string, Uniform::Ptr> UniformSet;
-      const UniformSet& Uniforms;
+      typedef std::map<const std::string, Uniform::Ptr> UniformCollection;
+      const UniformCollection& Uniforms;
 
-      void Activate();
+      typedef std::pair<const std::string, ShaderVertexAttribute> AttributeSetPair;
+      typedef std::map<const std::string, ShaderVertexAttribute> AttributesSet;
+      const AttributesSet& Attributes;
+
+      void Use();
       void UpdateUniforms();
 
       virtual void HasChanged(Uniform* uniform);
 
     private:
       Shader();
-      UniformSet  uniforms;
+      UniformCollection  uniforms;
       unsigned int program;
       std::vector<Uniform*> changedUniforms;
       std::vector<AutoUniform::Ptr> automaticUniforms;
+      AttributesSet attributes;
 
       void UpdateAutoUniforms(const PipelineState& pipelineState, const Scene::SceneState& sceneState);
       bool GetUniforms();
+      void GetAttributes();
     };
   }
 }

@@ -10,6 +10,7 @@ namespace Kandy
     {
       enum Enum
       {
+        None,
         Int,
         Float,
         FloatVector2,
@@ -34,10 +35,10 @@ namespace Kandy
 
     struct ShaderVertexAttribute
     {
-      ShaderVertexAttributeType::Enum  Type;
-      unsigned int  Length;
-      unsigned int  Location;
       std::string   Name;
+      unsigned int  ComponentCount;
+      unsigned int  Location;
+      ShaderVertexAttributeType::Enum  Type;
     };
   }
 }

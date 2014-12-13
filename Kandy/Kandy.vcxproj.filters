@@ -158,5 +158,8 @@
     <ClInclude Include="renderer\renderstate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="renderer\src\typeconversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

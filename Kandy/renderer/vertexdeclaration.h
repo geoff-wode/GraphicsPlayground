@@ -16,7 +16,7 @@ namespace Kandy
       VertexDeclaration(const VertexElement elements[], size_t count);
 
       // Number of bytes from one vertex to the next.
-      const unsigned int                Stride;
+      const unsigned int          Stride;
 
       const VertexElement* const  Elements;
       const size_t                ElementCount;

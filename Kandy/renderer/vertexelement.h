@@ -34,12 +34,14 @@ namespace Kandy
         const VertexElement positionElement(DataType::Float, 3, offsetof(MyVertex, position));
         const VertexElement combobulationElement(DataType::Float, 1, offsetof(MyVertex, combobulationFactor));
       */
-      VertexElement(DataType::Enum type, unsigned int elementCount, unsigned int offset);
+      VertexElement(DataType::Enum type, unsigned int ComponentCount, unsigned int offset);
+      VertexElement(DataType::Enum type, unsigned int ComponentCount, unsigned int offset, bool normalise);
 
       const DataType::Enum  Type;
-      const unsigned int    ElementCount;
+      const unsigned int    ComponentCount;
       const unsigned int    Offset;
       const unsigned int    Size;
+      const bool            Normalise;
     };
 
     bool operator==(const VertexElement& a, const Renderer::VertexElement& b);

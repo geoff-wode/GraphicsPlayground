@@ -61,6 +61,7 @@ namespace Kandy
       unsigned int stencilBufferSize;
 
       ClearState clearState;
+      RenderState renderState;
       PipelineState pipelineState;
 
       static AutoUniform::FactoryCollection autoUniformFactories;

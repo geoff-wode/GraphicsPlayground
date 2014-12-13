@@ -43,6 +43,97 @@ static void ApplyColourMask(const glm::bvec4& value, glm::bvec4& state)
 
 //------------------------------------------------------------
 
+static void ApplyIndexBuffer(const IndexBuffer::Ptr newBuffer, IndexBuffer::Ptr& oldBuffer)
+{
+  if (!newBuffer && oldBuffer)
+  {
+    oldBuffer->Unbind();
+  }
+  else if (newBuffer != oldBuffer)
+  {
+    newBuffer->Bind();
+  }
+  oldBuffer = newBuffer;
+}
+
+//------------------------------------------------------------
+
+static GLenum GLElementType(VertexElement::DataType::Enum type)
+{
+  switch (type)
+  {
+  case VertexElement::DataType::Byte:       return gl::BYTE; break;
+  case VertexElement::DataType::Short:      return gl::SHORT; break;
+  case VertexElement::DataType::Int:        return gl::INT; break;
+  case VertexElement::DataType::Float:      return gl::FLOAT; break;
+  case VertexElement::DataType::HalfFloat:  return gl::HALF_FLOAT; break;
+  case VertexElement::DataType::Double:     return gl::DOUBLE; break;
+  default: ASSERT(false);
+  }
+  return (GLenum)0;
+}
+
+//------------------------------------------------------------
+
+static void ApplyVertexBuffer(const VertexBuffer::Ptr newBuffer, VertexBuffer::Ptr& oldBuffer)
+{
+  if (newBuffer != oldBuffer)
+  {
+    const IVertexType& newVertexType = newBuffer->VertexType;
+    const VertexDeclaration& newVertexDecl = newVertexType.GetVertexDeclaration();
+
+    // Switch to the new buffer, enabling required elements...
+    newBuffer->Bind();
+    for (size_t i = 0; i < newVertexDecl.ElementCount; ++i)
+    {
+      gl::EnableVertexAttribArray(i);
+      gl::VertexAttribPointer(i,
+        newVertexDecl.Elements[i].Size,
+        GLElementType(newVertexDecl.Elements[i].Type),
+        newVertexDecl.Elements[i].Normalise,
+        newVertexDecl.Elements[i].ComponentCount,
+        (const GLvoid*)newVertexDecl.Elements[i].Offset);
+    }
+
+    // Disable vertex elements which are not required by the new buffer...
+    const IVertexType& oldVertexType = oldBuffer->VertexType;
+    const VertexDeclaration& oldVertexDecl = oldVertexType.GetVertexDeclaration();
+    if (newVertexDecl.ElementCount < oldVertexDecl.ElementCount)
+    {
+      for (size_t i = newVertexDecl.ElementCount; i < oldVertexDecl.ElementCount; ++i)
+      {
+        gl::DisableVertexAttribArray(i);
+      }
+    }
+
+    oldBuffer = newBuffer;
+  }
+}
+
+//------------------------------------------------------------
+
+static void ApplyShader(const Shader::Ptr newShader, Shader::Ptr& oldShader)
+{
+  if (newShader != oldShader)
+  {
+    newShader->Use();
+    oldShader = newShader;
+  }
+  oldShader->UpdateUniforms();
+}
+
+//------------------------------------------------------------
+
+static void ApplyRenderState(const RenderState& newState, RenderState& oldState)
+{
+  ApplyColourMask(newState.pipelineState.colourMask, oldState.pipelineState.colourMask);
+  ApplyIndexBuffer(newState.indexBuffer, oldState.indexBuffer);
+  ApplyVertexBuffer(newState.vertexBuffer, oldState.vertexBuffer);
+  ApplyShader(newState.shader, oldState.shader);
+}
+
+//------------------------------------------------------------
+
 Device::Device()
   : colourDepth(8,8,8,8),
     backbufferSize(1280,720),
@@ -158,8 +249,9 @@ void Device::Clear(const ClearState& state)
 
 //------------------------------------------------------------
 
-void Device::Draw(const Renderer::RenderState& state)
+void Device::Draw(const Renderer::RenderState& newRenderState)
 {
+  ApplyRenderState(newRenderState, renderState);
 }
 
 //------------------------------------------------------------

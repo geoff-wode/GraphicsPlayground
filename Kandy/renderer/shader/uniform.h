@@ -25,6 +25,7 @@ namespace Kandy
       {
         enum Enum
         {
+          None,
           Int,
           Float,
           FloatVector2,
@@ -40,7 +41,7 @@ namespace Kandy
       const Type::Enum  type;
       const unsigned int location;
 
-      virtual ~Uniform();
+      virtual ~Uniform() { }
 
       // Cause the GPU value to be updated from the CPU side
       void Update();
