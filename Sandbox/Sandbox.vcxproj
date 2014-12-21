@@ -41,6 +41,8 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir);$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(IntermediatesDir)\..\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(EXECUTABLE_DIR)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(INTERMEDIATES_DIR)\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -63,6 +65,9 @@
     <PostBuildEvent>
       <Command>$(CopySDLRuntime)</Command>
     </PostBuildEvent>
+    <ResourceCompile>
+      <Culture>0x0809</Culture>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
