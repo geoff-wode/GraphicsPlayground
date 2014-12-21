@@ -63,7 +63,7 @@
       <AdditionalDependencies>Kandy.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(CopySDLRuntime)</Command>
+      <Command>$(CopySDLRuntime) $(OutDir)</Command>
     </PostBuildEvent>
     <ResourceCompile>
       <Culture>0x0809</Culture>
