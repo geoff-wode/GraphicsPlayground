@@ -1,70 +1,52 @@
 #pragma once
 
-#include <glm\glm.hpp>
-#include <boost\noncopyable.hpp>
+#include <Kandy\core\game.h>
+#include <Kandy\renderer\devicecontext.h>
 #include <Kandy\renderer\clearstate.h>
-#include <Kandy\renderer\pipelinestate.h>
 #include <Kandy\renderer\renderstate.h>
-#include <Kandy\renderer\shader\autouniform.h>
 
 namespace Kandy
 {
-  namespace Core
-  {
-    class Game;
-  }
-
   namespace Renderer
   {
-    class Device : public boost::noncopyable
+    class Device
     {
     public:
-      friend class Core::Game;
-
-      static AutoUniform::FactoryCollection& GetAutoUniformFactories() { return autoUniformFactories; }
-
       Device();
-      ~Device();
+      virtual ~Device();
 
-      void SetBackbufferSize(const glm::ivec2& value) { backbufferSize = value; }
-      glm::ivec2 GetBackbufferSize() const { return backbufferSize; }
+      // Call this before Game::Initialise is called to configure the display attributes
+      // of the main window.
+      // The context cannot be modified after Device::Initialise is called.
+      void SetContext(const DeviceContext& context);
 
-      void SetColourDepth(const glm::ivec4& value) { colourDepth = value; }
-      glm::ivec4 GetColourDepth() const { return colourDepth; }
+      // Present the game display as full screen or in a window.
+      void SetFullScreen(bool enable);
 
-      void SetFullScreen(bool value) { fullScreen = value; }
-      bool GetFullScreen() const { return fullScreen; }
+      void Clear(const ClearState::Buffers::Enum& buffers, const ClearState& state);
 
-      void SetMultiSampling(bool value) { multiSampling = value; }
-      bool GetMultiSampling() const { return multiSampling; }
+      // When specifying an index buffer, count specifies the number of indices to process.
+      // Otherwise count specifies the number of _vertices_ to process.
+      void Render(PrimitiveType::Enum primitive, int count, const RenderState& renderState);
 
-      void SetMultiSamplingBuffers(unsigned int value) { multiSamplingBuffers = value; }
-      unsigned int GetMultiSamplingBuffers() const { return multiSamplingBuffers; }
+      // When specifying an index buffer, count specifies the number of indices to process and offset is
+      // a position within the index buffer to start from.
+      // Otherwise count specifies the number of _vertices_ to process and offset is a position within
+      // the vertex stream to start from.
+      void Render(PrimitiveType::Enum primitive, int count, int offset, const RenderState& renderState);
 
-      void Clear(const ClearState& state);
+#pragma region Internal
+      // Called by Game::Initialise before the main update loop is entered.
+      void Initialise(Core::Game* const game);
 
-      void Draw(const RenderState& state);
-
-      void AddAutoUniformFactory(AutoUniform::Factory::Ptr factory);
-
-      static unsigned int MaxVertexAttributes();
+      // If double-buffering is defined by the DeviceContext, called after rendering is
+      // completed in order to flip the front- and backbuffers.
+      void PresentBackbuffer();
+#pragma endregion Internal
 
     private:
-      bool Initialise(Core::Game& game);
-
-      glm::ivec4 colourDepth;
-      glm::ivec2 backbufferSize;
-      bool  fullScreen;
-      bool  multiSampling;
-      unsigned int multiSamplingBuffers;
-      unsigned int depthBufferSize;
-      unsigned int stencilBufferSize;
-
-      ClearState clearState;
-      RenderState renderState;
-      PipelineState pipelineState;
-
-      static AutoUniform::FactoryCollection autoUniformFactories;
+      struct Impl;
+      Impl* impl;
     };
   }
 }

@@ -27,37 +27,10 @@
     <ClCompile Include="renderer\src\device.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="renderer\src\window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="renderer\src\gl_core_3_3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\src\resourceloader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\buffers\indexbuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\buffers\vertexbuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\shaders\shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\shaders\uniform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\vertexelement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\vertexdeclaration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\vertexpositiontexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer\src\buffers\bufferusage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,91 +47,31 @@
     <ClInclude Include="renderer\device.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\clearstate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderer\src\gl_core_3_3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\resourceloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\shader.h">
+    <ClInclude Include="renderer\devicecontext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\shader\uniform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformobserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\scenestate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\autouniform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatMatrix4x4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatVector2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatVector3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatVector4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformtypes\uniformInt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\shader\uniformtypes\all.h">
+    <ClInclude Include="renderer\clearstate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="renderer\pipelinestate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\shader\autouniforms\list.h">
+    <ClInclude Include="renderer\pipelinestate\depthtest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\shader\vertexattribute.h">
+    <ClInclude Include="renderer\pipelinestate\facetculling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\buffers\vertexbuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\buffers\usagehint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\buffers\indexbuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\vertexelement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\vertexdeclaration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\vertextype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\vertexpositiontexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\src\buffers\bufferusage.h">
+    <ClInclude Include="renderer\pipelinestate\windingorder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="renderer\renderstate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\src\typeconversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

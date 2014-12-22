@@ -1,15 +1,17 @@
 #pragma once
 
-#include <boost\noncopyable.hpp>
-#include <boost\shared_ptr.hpp>
-#include <Kandy\renderer\device.h>
-#include <Kandy\renderer\window.h>
+#include <list>
 
 namespace Kandy
 {
+  namespace Renderer
+  {
+    class Device;
+  }
+
   namespace Core
   {
-    class Game : public boost::noncopyable
+    class Game
     {
     public:
       virtual ~Game();
@@ -17,23 +19,17 @@ namespace Kandy
       void Run();
       void Exit();
 
-      const char* const Name;
-      boost::shared_ptr<Renderer::Device> device;
-      boost::shared_ptr<Renderer::Window> window;
+      Renderer::Device* Device;
 
     protected:
-      Game(const char* const name);
+      Game();
       virtual void Initialise();
-      virtual void Update(unsigned int elapsedMs);
-      virtual bool PreRender(unsigned int elapsedMs);
-      virtual void Render(unsigned int elapsedMs);
-      virtual void PostRender(unsigned int elapsedMs);
+      virtual void Update(double elapsedMs);
+      virtual void Render(double elapsedMs);
 
     private:
-      bool running;
-      unsigned int lastUpdate;
-      unsigned int lastRender;
-      const unsigned int frameRate;
+      struct Impl;
+      Impl* impl;
     };
   }
 }

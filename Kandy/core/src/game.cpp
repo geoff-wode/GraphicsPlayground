@@ -1,87 +1,118 @@
 #include <SDL.h>
 #include <core\game.h>
 #include <core\logging.h>
+#include <renderer\device.h>
+#include <boost\foreach.hpp>
+#include <boost\scoped_ptr.hpp>
+#include <boost\make_shared.hpp>
 
 using namespace Kandy;
 using namespace Kandy::Core;
-using namespace Kandy::Renderer;
 
 //---------------------------------------------------------
+
+struct Game::Impl
+{
+  Impl()
+    : running(true)
+  {
+  }
+
+  bool running;
+  Renderer::Device device;
+};
+
+//---------------------------------------------------------
+
+static const double fps = 60.0;
+static const double msPerFrame = 1000.0 / fps;
 
 static void GetSDLEvents(Game* game);
 static void HandleWindowEvent(Game* game, SDL_Event* event);
 
 //---------------------------------------------------------
 
-Game::Game(const char* const name)
-  : Name(name),
-    running(true),
-    lastUpdate(0),
-    lastRender(0),
-    frameRate(1000/60),
-    device(new Renderer::Device())
+Game::Game()
+  : impl(new Impl())
 {
+  Device = &impl->device;
 }
+
+//---------------------------------------------------------
 
 Game::~Game()
 {
+  delete impl;
 }
+
+//---------------------------------------------------------
 
 void Game::Run()
 {
   Initialise();
-  while (running)
+
+  double lag = 0.0;
+  double prevTime = 0.0;
+
+  while (impl->running)
   {
     GetSDLEvents(this);
-    if (running)
+    if (impl->running)
     {
-      const unsigned int now = SDL_GetTicks();
-      const unsigned int elapsedMs = now - lastUpdate;
-      Update(elapsedMs);
-      lastUpdate = now;
-      if ( ((now - lastRender) >= frameRate) && PreRender(elapsedMs) )
+      // Work out how much real time has passed sine the last update...
+      const double now = SDL_GetTicks();
+      const double elapsed = now - prevTime;
+      prevTime = now;
+      lag += elapsed;
+
+      // Update the simulation. If several frames of state change have
+      // been missed, make repeated calls to catch up...
+      while (impl->running && (lag > msPerFrame))
       {
-        Render(elapsedMs);
-        PostRender(elapsedMs);
-        lastRender = now;
+        Update(msPerFrame);
+        lag -= msPerFrame;
       }
+
+      if (impl->running)
+      {
+        // Render the scene.
+        // Linearly interpolate the visible state so that rendering can
+        // take place between the time steps of the simulation.
+        const double framePosition = lag / msPerFrame;
+        Render(framePosition);
+
+        Device->PresentBackbuffer();
+      }
+
       SDL_Delay(1);
     }
   }
 }
 
+//---------------------------------------------------------
+
 void Game::Exit()
 {
-  running = false;
+  impl->running = false;
 }
+
+//---------------------------------------------------------
 
 void Game::Initialise()
 {
-  if (!device->Initialise(*this))
-  {
-    Exit();
-    return;
-  }
-  window->SetCurrent();
-  window->Show();
+  Device->Initialise(this);
 }
 
-void Game::Update(unsigned int elapsedMs)
+//---------------------------------------------------------
+
+void Game::Update(double elapsedMs)
 {
 }
 
-bool Game::PreRender(unsigned int elapsedMs)
-{
-  return true;
-}
+//---------------------------------------------------------
 
-void Game::Render(unsigned int elapsedMs)
+void Game::Render(double elapsedMs)
 {
-}
-
-void Game::PostRender(unsigned int elapsedMs)
-{
-  window->SwapBuffers();
 }
 
 //---------------------------------------------------------

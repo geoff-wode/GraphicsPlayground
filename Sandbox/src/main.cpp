@@ -1,61 +1,58 @@
 #include <Kandy\core\program.h>
 #include <Kandy\core\game.h>
 #include <Kandy\core\logging.h>
+#include <Kandy\renderer\device.h>
 #include <Kandy\renderer\clearstate.h>
-#include <Kandy\core\resourceloader.h>
-#include <Kandy\renderer\shader\autouniform.h>
-#include <Kandy\renderer\shader\uniformtypes\all.h>
 
-#include <resource.h>
-#include <string>
+using namespace Kandy::Core;
+using namespace Kandy::Renderer;
 
 class MyGame : public Kandy::Core::Game
 {
 public:
-  Kandy::Renderer::ClearState redOrBlue[2];
-  unsigned int selector;
-  static const unsigned int delay = 5000;
-  unsigned int timer;
+  const double delayMs;
+  double time;
+  int selector;
+  ClearState clearState[2];
 
-  MyGame()
-    : Game("Sandbox")
+  MyGame() 
+    : Kandy::Core::Game(),
+      delayMs(1000 * 5)
   {
-    Kandy::Core::ResourceLoader::Resource res;
-    res.id = IDR_TEXTFILE2;
-    res.type = TEXTFILE;
-    Kandy::Core::ResourceLoader::Load(res);
-    const std::string s(res.data, res.size);
-    LOG("I loaded \"%s\"!\n", s.c_str());
   }
 
-  virtual void Initialise()
+  void Initialise()
   {
     Game::Initialise();
 
-    redOrBlue[0].colour = glm::vec4(1,0,0,1);
-    redOrBlue[1].colour = glm::vec4(0,0,1,1);
+    time = 0;
     selector = 0;
-    timer = 0;
+    clearState[0].colourBuffer.colour = glm::vec4(1, 0, 0, 1);
+    clearState[1].colourBuffer.colour = glm::vec4(0, 0, 1, 1);
   }
 
-  virtual void Update(unsigned int elapsedMs)
+  void Update(double elapsedMs)
   {
-    timer += elapsedMs;
-    if (timer >= delay)
+    time += elapsedMs;
+    if (time > delayMs)
     {
-      timer -= delay;
+      time -= delayMs;
       selector ^= 1;
     }
-    return Game::Update(elapsedMs);
+
+    Game::Update(elapsedMs);
+
+    //Exit();
   }
 
-  virtual void Render(unsigned int elapsedMs)
+  void Render(double elapsedMs)
   {
-    device->Clear(redOrBlue[selector]);
-
+    Device->Clear(ClearState::Buffers::Colour, clearState[selector]);
     Game::Render(elapsedMs);
   }
 };
+
+//---------------------------------------------------------------
 
 void Kandy::Core::Program::Main(int argc, char* argv[])
 {

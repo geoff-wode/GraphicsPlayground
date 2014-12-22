@@ -1,147 +1,75 @@
 #include <Windows.h>
 #include <SDL.h>
+#include <vector>
 #include <stdlib.h>
-#include <boost\make_shared.hpp>
-#include <boost\foreach.hpp>
+#include <glm\glm.hpp>
 #include <core\logging.h>
 #include <core\game.h>
 #include <renderer\device.h>
-#include <renderer\shader\autouniforms\list.h>
 #include "gl_core_3_3.hpp"
+#include <boost\foreach.hpp>
+#include <boost\shared_ptr.hpp>
+#include <boost\make_shared.hpp>
+#include <boost\foreach.hpp>
 
-using namespace Kandy;
+using namespace Kandy::Core;
 using namespace Kandy::Renderer;
 
 //------------------------------------------------------------
 
-AutoUniform::FactoryCollection Device::autoUniformFactories;
+#define GL_ATTR(container, id, preferredValue) \
+  do \
+  { \
+    GLAttr attr(#id, id, preferredValue); \
+    container.push_back(attr); \
+  } while (0)
 
 //------------------------------------------------------------
 
-static void ForceClearState(const ClearState& state)
-{
-  gl::ClearColor(state.colour.r, state.colour.g, state.colour.b, state.colour.a);
-}
+static DeviceContext defaultContext;
 
 //------------------------------------------------------------
 
-static void ForceRenderState(const PipelineState& state)
+struct GLAttr
 {
-  gl::ColorMask(state.colourMask.r, state.colourMask.g, state.colourMask.b, state.colourMask.a);
-}
-
-//------------------------------------------------------------
-
-static void ApplyColourMask(const glm::bvec4& value, glm::bvec4& state)
-{
-  if (state != value)
+  GLAttr(const char* const name, const SDL_GLattr id, int preferredValue)
+    : name(name), id(id), preferredValue(preferredValue)
   {
-    state = value;
-    gl::ColorMask(state.r, state.g, state.b, state.a);
   }
-}
+  const char* const name;
+  const SDL_GLattr  id;
+  const int preferredValue;
+  int actualValue;
+};
 
 //------------------------------------------------------------
 
-static void ApplyIndexBuffer(const IndexBuffer::Ptr newBuffer, IndexBuffer::Ptr& oldBuffer)
+struct Device::Impl
 {
-  if (!newBuffer && oldBuffer)
+  Impl()
+    : fullscreen(false),
+      backbufferSize(1280, 720),
+      deviceContext(defaultContext)
   {
-    oldBuffer->Unbind();
   }
-  else if (newBuffer != oldBuffer)
-  {
-    newBuffer->Bind();
-  }
-  oldBuffer = newBuffer;
-}
+
+  bool fullscreen;
+  glm::ivec2 backbufferSize;
+  DeviceContext deviceContext;
+  SDL_Window* sdlWindow;
+  SDL_GLContext glContext;
+  ClearState clearState;
+  RenderState renderState;
+};
 
 //------------------------------------------------------------
 
-static GLenum GLElementType(VertexElement::DataType::Enum type)
-{
-  switch (type)
-  {
-  case VertexElement::DataType::Byte:       return gl::BYTE; break;
-  case VertexElement::DataType::Short:      return gl::SHORT; break;
-  case VertexElement::DataType::Int:        return gl::INT; break;
-  case VertexElement::DataType::Float:      return gl::FLOAT; break;
-  case VertexElement::DataType::HalfFloat:  return gl::HALF_FLOAT; break;
-  case VertexElement::DataType::Double:     return gl::DOUBLE; break;
-  default: ASSERT(false);
-  }
-  return (GLenum)0;
-}
+static void ApplyColourMask(const glm::bvec4& in, glm::bvec4& out);
+static void ApplyDepthMask(bool in, bool& out);
 
 //------------------------------------------------------------
 
-static void ApplyVertexBuffer(const VertexBuffer::Ptr newBuffer, VertexBuffer::Ptr& oldBuffer)
-{
-  if (newBuffer != oldBuffer)
-  {
-    const IVertexType& newVertexType = newBuffer->VertexType;
-    const VertexDeclaration& newVertexDecl = newVertexType.GetVertexDeclaration();
-
-    // Switch to the new buffer, enabling required elements...
-    newBuffer->Bind();
-    for (size_t i = 0; i < newVertexDecl.ElementCount; ++i)
-    {
-      gl::EnableVertexAttribArray(i);
-      gl::VertexAttribPointer(i,
-        newVertexDecl.Elements[i].Size,
-        GLElementType(newVertexDecl.Elements[i].Type),
-        newVertexDecl.Elements[i].Normalise,
-        newVertexDecl.Elements[i].ComponentCount,
-        (const GLvoid*)newVertexDecl.Elements[i].Offset);
-    }
-
-    // Disable vertex elements which are not required by the new buffer...
-    const IVertexType& oldVertexType = oldBuffer->VertexType;
-    const VertexDeclaration& oldVertexDecl = oldVertexType.GetVertexDeclaration();
-    if (newVertexDecl.ElementCount < oldVertexDecl.ElementCount)
-    {
-      for (size_t i = newVertexDecl.ElementCount; i < oldVertexDecl.ElementCount; ++i)
-      {
-        gl::DisableVertexAttribArray(i);
-      }
-    }
-
-    oldBuffer = newBuffer;
-  }
-}
-
-//------------------------------------------------------------
-
-static void ApplyShader(const Shader::Ptr newShader, Shader::Ptr& oldShader)
-{
-  if (newShader != oldShader)
-  {
-    newShader->Use();
-    oldShader = newShader;
-  }
-  oldShader->UpdateUniforms();
-}
-
-//------------------------------------------------------------
-
-static void ApplyRenderState(const RenderState& newState, RenderState& oldState)
-{
-  ApplyColourMask(newState.pipelineState.colourMask, oldState.pipelineState.colourMask);
-  ApplyIndexBuffer(newState.indexBuffer, oldState.indexBuffer);
-  ApplyVertexBuffer(newState.vertexBuffer, oldState.vertexBuffer);
-  ApplyShader(newState.shader, oldState.shader);
-}
-
-//------------------------------------------------------------
-
-Device::Device()
-  : colourDepth(8,8,8,8),
-    backbufferSize(1280,720),
-    fullScreen(false),
-    multiSampling(true),
-    multiSamplingBuffers(2),
-    depthBufferSize(24),
-    stencilBufferSize(8)
+Device::Device() : impl(new Impl())
 {
 }
 
@@ -149,120 +77,158 @@ Device::Device()
 
 Device::~Device()
 {
+  SDL_GL_DeleteContext(impl->glContext);
+  SDL_DestroyWindow(impl->sdlWindow);
+  delete impl;
 }
 
 //------------------------------------------------------------
 
-bool Device::Initialise(Core::Game& game)
+void Device::SetContext(const DeviceContext& context) { impl->deviceContext = context; }
+
+//------------------------------------------------------------
+
+void Device::SetFullScreen(bool enable)
 {
-  if (0 != SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER))
+  if (impl->fullscreen != enable)
   {
-    MessageBox(NULL, SDL_GetError(), "SDL Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
-    return false;
+    if (enable)
+    {
+      const Uint32 flags = impl->deviceContext.fakeFullScreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_WINDOW_FULLSCREEN;
+      SDL_SetWindowFullscreen(impl->sdlWindow, flags);
+    }
+    else
+    {
+      SDL_SetWindowFullscreen(impl->sdlWindow, 0);
+    }
+    impl->fullscreen = enable;
+  }
+}
+
+//------------------------------------------------------------
+
+void Device::Initialise(Game* const game)
+{
+  // See these sites for details on setting GL attributes _for the main render window_:
+  // http://wiki.libsdl.org/SDL_GLattr#OpenGL
+  // http://stackoverflow.com/questions/22435518/sdl2-and-glew-unable-to-get-proper-opengl-version-if-using-sdl-gl-setattribute
+  std::vector<GLAttr> glAttrs;
+  //GL_ATTR(glAttrs, SDL_GL_CONTEXT_PROFILE_MASK,  SDL_GL_CONTEXT_PROFILE_CORE);
+  //GL_ATTR(glAttrs, SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
+  //GL_ATTR(glAttrs, SDL_GL_CONTEXT_FLAGS,         SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+  //GL_ATTR(glAttrs, SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  //GL_ATTR(glAttrs, SDL_GL_CONTEXT_MINOR_VERSION, 3);
+  //GL_ATTR(glAttrs, SDL_GL_RED_SIZE,              impl->deviceContext.colourDepth.r);
+  //GL_ATTR(glAttrs, SDL_GL_GREEN_SIZE,            impl->deviceContext.colourDepth.g);
+  //GL_ATTR(glAttrs, SDL_GL_BLUE_SIZE,             impl->deviceContext.colourDepth.b);
+  //GL_ATTR(glAttrs, SDL_GL_ALPHA_SIZE,            impl->deviceContext.colourDepth.a);
+  GL_ATTR(glAttrs, SDL_GL_DOUBLEBUFFER,          impl->deviceContext.doubleBuffered ? 1 : 0);
+
+  BOOST_FOREACH(auto attr, glAttrs)
+  {
+    SDL_GL_SetAttribute(attr.id, attr.preferredValue);
+  }
+
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+  {
+    MessageBox(NULL, SDL_GetError(), "ERROR", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+    FATAL("cannot initialise system - %s\n", SDL_GetError());
+    game->Exit();
+    return;
   }
   atexit(SDL_Quit);
 
-#define GL_ATTR(id, value)  { #id, id, value, 0 }
-  struct GLAttr
+  char path[MAX_PATH + 1];
+  const DWORD pathSize = GetModuleFileName(NULL, path, MAX_PATH);
+
+  impl->sdlWindow = SDL_CreateWindow(pathSize ? path : "KandyApp",
+    SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    impl->backbufferSize.x, impl->backbufferSize.y,
+    SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | (impl->fullscreen ? SDL_WINDOW_FULLSCREEN : 0));
+
+  if (impl->sdlWindow)
   {
-    const char* const name;
-    const SDL_GLattr  id;
-    const int         preferredValue;
-    int               actualValue;
-  } attrs[] =
-  {
-    GL_ATTR(SDL_GL_CONTEXT_MAJOR_VERSION, 3),
-    GL_ATTR(SDL_GL_CONTEXT_MINOR_VERSION, 3),
-    GL_ATTR(SDL_GL_CONTEXT_PROFILE_MASK,  SDL_GL_CONTEXT_PROFILE_CORE),
-    GL_ATTR(SDL_GL_RED_SIZE,              colourDepth.r),
-    GL_ATTR(SDL_GL_GREEN_SIZE,            colourDepth.g),
-    GL_ATTR(SDL_GL_BLUE_SIZE,             colourDepth.b),
-    GL_ATTR(SDL_GL_ALPHA_SIZE,            colourDepth.a),
-    GL_ATTR(SDL_GL_DEPTH_SIZE,            depthBufferSize),
-    GL_ATTR(SDL_GL_STENCIL_SIZE,          stencilBufferSize),
-    GL_ATTR(SDL_GL_MULTISAMPLEBUFFERS,    multiSampling ? 1 : 0),
-    GL_ATTR(SDL_GL_MULTISAMPLESAMPLES,    multiSamplingBuffers),
-    GL_ATTR(SDL_GL_DOUBLEBUFFER,          1)
-  };
-  const unsigned int attrCount = sizeof(attrs) / sizeof(attrs[0]);
-for (unsigned int i = 0; i < attrCount; ++i)
-  {
-    SDL_GL_SetAttribute(attrs[i].id, attrs[i].preferredValue);
+    impl->glContext = SDL_GL_CreateContext(impl->sdlWindow);
   }
-
-  game.window = Window::Create(game.device->GetBackbufferSize(), game.Name);
-  if (!game.window)
+  
+  if (impl->sdlWindow && impl->glContext)
   {
-    return false;
+    if (gl::sys::LoadFunctions())
+    {
+      INFO("OpenGL %d.%d\n", gl::sys::GetMajorVersion(), gl::sys::GetMinorVersion());
+      BOOST_FOREACH(auto attr, glAttrs)
+      {
+        SDL_GL_GetAttribute(attr.id, &attr.actualValue);
+        INFO("%s = %d (%d requested)\n", attr.name, attr.actualValue, attr.preferredValue);
+      }
+    }
+    else
+    {
+      MessageBox(NULL, "Cannot load OpenGL", "ERROR", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+      FATAL("cannot load OpenGL\n", 0);
+      game->Exit();
+    }
   }
-
-  game.window->SetCurrent();
-  for (unsigned int i = 0; i < attrCount; ++i)
+  else
   {
-    SDL_GL_GetAttribute(attrs[i].id, &attrs[i].actualValue);
-    LOG("%s = %d (pref:%d)\n", attrs[i].name, attrs[i].actualValue, attrs[i].preferredValue);
+    MessageBox(NULL, SDL_GetError(), "ERROR", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+    FATAL("cannot create game window - %s\n", SDL_GetError());
+    game->Exit();
   }
-
-  if (!gl::sys::LoadFunctions())
-  {
-    return false;
-  }
-  LOG("GL version: %d.%d\n", gl::sys::GetMajorVersion(), gl::sys::GetMinorVersion());
-
-  // Keep this list in sync with Scene::SceneState and renderer\shader\autouniforms\list.h...
-  AddAutoUniformFactory(boost::make_shared<AutoUniform::CameraPositionFactory>());
-  AddAutoUniformFactory(boost::make_shared<AutoUniform::ModelMatrixFactory>());
-  AddAutoUniformFactory(boost::make_shared<AutoUniform::ViewMatrixFactory>());
-  AddAutoUniformFactory(boost::make_shared<AutoUniform::ProjectionMatrixFactory>());
-  AddAutoUniformFactory(boost::make_shared<AutoUniform::ViewProjectionMatrixFactory>());
-  AddAutoUniformFactory(boost::make_shared<AutoUniform::ModelViewProjectionMatrixFactory>());
-
-  return true;
 }
 
 //------------------------------------------------------------
 
-void Device::AddAutoUniformFactory(AutoUniform::Factory::Ptr factory)
+void Device::PresentBackbuffer()
 {
-  autoUniformFactories[factory->GetName()] = factory;
-  LOG("GLSL auto-uniform: %s\n", factory->GetName().c_str());
+  SDL_GL_SwapWindow(impl->sdlWindow);
 }
 
 //------------------------------------------------------------
 
-void Device::Clear(const ClearState& state)
+void Device::Clear(const ClearState::Buffers::Enum& buffers, const ClearState& state)
 {
-  ApplyColourMask(state.colourMask, pipelineState.colourMask);
+  ApplyColourMask(state.colourBuffer.mask, impl->clearState.colourBuffer.mask);
+  ApplyDepthMask(state.depthBuffer.mask, impl->clearState.depthBuffer.mask);
 
-  if (state.colour != clearState.colour)
+  if (state.colourBuffer.colour != impl->clearState.colourBuffer.colour)
   {
-    gl::ClearColor(state.colour.r, state.colour.g, state.colour.b, state.colour.a); 
-    clearState.colour = state.colour;
+    const glm::vec4& colour = state.colourBuffer.colour;
+    gl::ClearColor(colour.r, colour.g, colour.b, colour.a);
+    impl->clearState.colourBuffer.colour = colour;
   }
 
-  GLbitfield mask = 0;
-  if (state.buffers & Buffers::Colour) { mask |= gl::COLOR_BUFFER_BIT; }
-  if (state.buffers & Buffers::Depth) { mask |= gl::DEPTH_BUFFER_BIT; }
-  if (state.buffers & Buffers::Stencil) { mask |= gl::STENCIL_BUFFER_BIT; }
-  gl::Clear(mask);
-}
-
-//------------------------------------------------------------
-
-void Device::Draw(const Renderer::RenderState& newRenderState)
-{
-  ApplyRenderState(newRenderState, renderState);
-}
-
-//------------------------------------------------------------
-
-unsigned int Device::MaxVertexAttributes()
-{
-  static unsigned int maxVertexAttributes = 0;
-  if (!maxVertexAttributes)
+  if (state.depthBuffer.value != impl->clearState.depthBuffer.value)
   {
-    gl::GetIntegerv(gl::MAX_VERTEX_ATTRIBS, (GLint*)&maxVertexAttributes);
-    LOG("gl::MAX_VERTEX_ATTRIBS = %d\n", maxVertexAttributes);
+    gl::ClearDepth(state.depthBuffer.value);
+    impl->clearState.depthBuffer.value = state.depthBuffer.value;
   }
-  return maxVertexAttributes;
+
+  GLbitfield bufferBits = 0;
+  if (buffers & ClearState::Buffers::Colour) { bufferBits |= gl::COLOR_BUFFER_BIT; }
+  if (buffers & ClearState::Buffers::Depth) { bufferBits |= gl::DEPTH_BUFFER_BIT; }
+  if (buffers & ClearState::Buffers::Stencil) { bufferBits |= gl::STENCIL_BUFFER_BIT; }
+  gl::Clear(bufferBits);
+}
+
+//------------------------------------------------------------
+
+static void ApplyColourMask(const glm::bvec4& in, glm::bvec4& out)
+{
+  if (in != out)
+  {
+    gl::ColorMask(in.r, in.g, in.b, in.a);
+    out = in;
+  }
+}
+
+//------------------------------------------------------------
+
+static void ApplyDepthMask(bool in, bool& out)
+{
+  if (in != out)
+  {
+    gl::DepthMask(in ? gl::TRUE_ : gl::FALSE_);
+    out = in;
+  }
 }

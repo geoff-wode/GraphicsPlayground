@@ -15,54 +15,23 @@
     <ClCompile Include="core\src\logging.cpp" />
     <ClCompile Include="core\src\main.cpp" />
     <ClCompile Include="core\src\resourceloader.cpp" />
-    <ClCompile Include="renderer\src\buffers\bufferusage.cpp" />
     <ClCompile Include="renderer\src\device.cpp" />
     <ClCompile Include="renderer\src\gl_core_3_3.cpp" />
-    <ClCompile Include="renderer\src\buffers\indexbuffer.cpp" />
-    <ClCompile Include="renderer\src\shaders\shader.cpp" />
-    <ClCompile Include="renderer\src\shaders\uniform.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NoListing</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="renderer\src\buffers\vertexbuffer.cpp" />
-    <ClCompile Include="renderer\src\vertexdeclaration.cpp" />
-    <ClCompile Include="renderer\src\vertexelement.cpp" />
-    <ClCompile Include="renderer\src\vertexpositiontexture.cpp" />
-    <ClCompile Include="renderer\src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\game.h" />
     <ClInclude Include="core\logging.h" />
     <ClInclude Include="core\program.h" />
     <ClInclude Include="core\resourceloader.h" />
-    <ClInclude Include="renderer\buffers\indexbuffer.h" />
-    <ClInclude Include="renderer\buffers\usagehint.h" />
-    <ClInclude Include="renderer\buffers\vertexbuffer.h" />
     <ClInclude Include="renderer\clearstate.h" />
     <ClInclude Include="renderer\device.h" />
-    <ClInclude Include="renderer\renderstate.h" />
+    <ClInclude Include="renderer\devicecontext.h" />
     <ClInclude Include="renderer\pipelinestate.h" />
-    <ClInclude Include="renderer\shader.h" />
-    <ClInclude Include="renderer\shader\autouniform.h" />
-    <ClInclude Include="renderer\shader\autouniforms\list.h" />
-    <ClInclude Include="renderer\shader\uniform.h" />
-    <ClInclude Include="renderer\shader\uniformtypes\all.h" />
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloat.h" />
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatMatrix4x4.h" />
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatVector2.h" />
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatVector3.h" />
-    <ClInclude Include="renderer\shader\uniformtypes\uniformFloatVector4.h" />
-    <ClInclude Include="renderer\shader\uniformtypes\uniformInt.h" />
-    <ClInclude Include="renderer\shader\uniformobserver.h" />
-    <ClInclude Include="renderer\shader\vertexattribute.h" />
-    <ClInclude Include="renderer\src\buffers\bufferusage.h" />
+    <ClInclude Include="renderer\pipelinestate\facetculling.h" />
+    <ClInclude Include="renderer\pipelinestate\depthtest.h" />
+    <ClInclude Include="renderer\pipelinestate\windingorder.h" />
+    <ClInclude Include="renderer\renderstate.h" />
     <ClInclude Include="renderer\src\gl_core_3_3.hpp" />
-    <ClInclude Include="renderer\src\typeconversion.h" />
-    <ClInclude Include="renderer\vertexdeclaration.h" />
-    <ClInclude Include="renderer\vertexelement.h" />
-    <ClInclude Include="renderer\vertexpositiontexture.h" />
-    <ClInclude Include="renderer\vertextype.h" />
-    <ClInclude Include="renderer\window.h" />
-    <ClInclude Include="scene\scenestate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{79B88AEF-90A7-42C0-A2B4-A81DB3DB1A22}</ProjectGuid>

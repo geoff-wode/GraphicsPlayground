@@ -40,9 +40,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir);$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(IntermediatesDir)\..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(EXECUTABLE_DIR)\$(ProjectName)\$(Configuration)\</OutDir>
     <IntDir>$(INTERMEDIATES_DIR)\$(ProjectName)\$(Configuration)\</IntDir>
+    <LibraryPath>$(BUILT_LIBS);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -94,13 +94,6 @@
     <None Include="log.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="text.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Sandbox.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

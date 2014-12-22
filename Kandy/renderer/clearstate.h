@@ -6,30 +6,36 @@ namespace Kandy
 {
   namespace Renderer
   {
-    namespace Buffers
-    {
-      enum Enum
-      {
-        Colour  = 1 << 0,
-        Depth   = 1 << 1,
-        Stencil = 1 << 2,
-        ColourDepth = Colour | Depth,
-        All         = Colour | Depth | Stencil
-      };
-    }
-
     struct ClearState
     {
-      Buffers::Enum buffers;
-      glm::vec4   colour;
-      glm::bvec4  colourMask;
-
-      ClearState()
-        : buffers(Buffers::All),
-          colour(0,0,0,0),
-          colourMask(true,true,true,true)
+      struct Buffers
       {
-      }
+        enum Enum
+        {
+          Colour  = 1,
+          Depth   = 2,
+          Stencil = 4,
+          ColourDepth = Colour | Depth,
+          All = Colour | Depth | Stencil
+        };
+      };
+
+      struct DepthBuffer
+      {
+        DepthBuffer() : mask(true), value(1.0f) { }
+        bool mask;
+        float value;
+      };
+
+      struct ColourBuffer
+      {
+        ColourBuffer() : mask(true), colour(0) { }
+        glm::bvec4 mask;
+        glm::vec4  colour;
+      };
+      
+      DepthBuffer   depthBuffer;
+      ColourBuffer  colourBuffer;
     };
   }
 }
