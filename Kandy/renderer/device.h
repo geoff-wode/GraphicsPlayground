@@ -35,6 +35,8 @@ namespace Kandy
       // the vertex stream to start from.
       void Render(PrimitiveType::Enum primitive, int count, int offset, const RenderState& renderState);
 
+      static size_t MaxVertexAttributes();
+
 #pragma region Internal
       // Called by Game::Initialise before the main update loop is entered.
       void Initialise(Core::Game* const game);

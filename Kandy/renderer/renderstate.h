@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Kandy\renderer\vertexarray.h>
+#include <Kandy\renderer\buffers\indexbuffer.h>
 #include <Kandy\renderer\pipelinestate.h>
 
 namespace Kandy
@@ -30,7 +32,10 @@ namespace Kandy
     */
     struct RenderState
     {
-      // TODO: Add shader & vertex array stuff
+      // TODO: Add shader
+
+      VertexArray* vertexArray;
+      IndexBuffer* indexBuffer;
       PipelineState pipelineState;
     };
   }
