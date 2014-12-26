@@ -1,11 +1,13 @@
 #include <Windows.h>
 #include <SDL.h>
+#include <map>
 #include <vector>
 #include <stdlib.h>
 #include <glm\glm.hpp>
 #include <core\logging.h>
 #include <core\game.h>
 #include <renderer\device.h>
+#include <renderer\shaders\autouniforms\autoshaderuniform.h>
 #include "gl_core_3_3.hpp"
 #include "gltypeconversion.h"
 #include <boost\foreach.hpp>
@@ -63,6 +65,8 @@ struct Device::Impl
   RenderState renderState;
 
   size_t activeVertexAttribCount;
+
+  std::map<const char* const, boost::shared_ptr<AutoShaderUniformFactory> > autoUniformFactories;
 };
 
 //------------------------------------------------------------
@@ -83,6 +87,10 @@ static void ApplyVertexArray(const VertexArray* in, size_t& activeVertexAttribCo
 
 Device::Device() : impl(new Impl())
 {
+#undef AUTO_SHADER_UNIFORM
+#define AUTO_SHADER_UNIFORM(data_name, data_type, data_source) \
+  impl->autoUniformFactories[#data_name] = boost::make_shared<data_name##AutoShaderUniformFactory>();
+#include <renderer\shaders\autouniforms\all.h>
 }
 
 //------------------------------------------------------------

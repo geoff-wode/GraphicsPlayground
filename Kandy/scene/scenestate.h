@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm\glm.hpp>
 
 namespace Kandy
 {
@@ -7,6 +8,7 @@ namespace Kandy
   {
     struct SceneState
     {
+      glm::vec3 cameraPosition;
     };
   }
 }

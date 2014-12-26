@@ -155,5 +155,14 @@
     <ClInclude Include="renderer\shaders\uniforms\alltypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="renderer\shaders\autouniforms\autoshaderuniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\autouniforms\all.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\autouniforms\define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

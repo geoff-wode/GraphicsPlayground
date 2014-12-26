@@ -42,11 +42,14 @@
     <ClInclude Include="renderer\pipelinestate\depthtest.h" />
     <ClInclude Include="renderer\pipelinestate\windingorder.h" />
     <ClInclude Include="renderer\renderstate.h" />
+    <ClInclude Include="renderer\shaders\autouniforms\all.h" />
+    <ClInclude Include="renderer\shaders\autouniforms\define.h" />
     <ClInclude Include="renderer\shaders\shader.h" />
     <ClInclude Include="renderer\shaders\shaderuniform.h" />
     <ClInclude Include="renderer\shaders\shaderuniformbase.h" />
     <ClInclude Include="renderer\shaders\shaderuniformobserver.h" />
     <ClInclude Include="renderer\shaders\uniforms\alltypes.h" />
+    <ClInclude Include="renderer\shaders\autouniforms\autoshaderuniform.h" />
     <ClInclude Include="renderer\shaders\uniforms\shaderuniform.h" />
     <ClInclude Include="renderer\shaders\uniforms\shaderuniformbase.h" />
     <ClInclude Include="renderer\shaders\uniforms\shaderuniformobserver.h" />

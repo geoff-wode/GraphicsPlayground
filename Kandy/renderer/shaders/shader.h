@@ -6,6 +6,7 @@
 #include <Kandy\renderer\shaders\shadervertexattribute.h>
 #include <Kandy\renderer\shaders\uniforms\shaderuniform.h>
 #include <Kandy\renderer\shaders\uniforms\shaderuniformobserver.h>
+#include <Kandy\renderer\shaders\autouniforms\define.h>
 
 namespace Kandy
 {
@@ -39,11 +40,11 @@ namespace Kandy
       // Send all modified uniform values for this shader to the GPU.
       void Update(const RenderState& renderState, const Scene::SceneState& sceneState);
 
+      virtual void NotifyUniformValueChanged(ShaderUniformBase* uniform);
+
     private:
       struct Impl;
       Impl* impl;
-
-      virtual void NotifyUniformValueChanged(ShaderUniformBase* uniform);
     };
   }
 }

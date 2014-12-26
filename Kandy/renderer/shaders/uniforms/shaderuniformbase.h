@@ -30,9 +30,9 @@ namespace Kandy
       {
       }
 
-    private:
       ShaderUniformObserver* observer;
 
+    private:
       virtual void SetGPUValue() const = 0;
     };
   }
