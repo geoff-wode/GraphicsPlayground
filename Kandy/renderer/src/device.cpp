@@ -108,6 +108,18 @@ size_t Device::MaxVertexAttributes()
 
 //------------------------------------------------------------
 
+size_t Device::MaxTextureUnits()
+{
+  static GLint max = 0;
+  if (!max)
+  {
+    gl::GetIntegerv(gl::MAX_COMBINED_TEXTURE_IMAGE_UNITS, &max);
+  }
+  return max;
+}
+
+//------------------------------------------------------------
+
 void Device::SetContext(const DeviceContext& context) { impl->deviceContext = context; }
 
 //------------------------------------------------------------
@@ -137,6 +149,7 @@ void Device::Initialise(Game* const game)
   // http://wiki.libsdl.org/SDL_GLattr#OpenGL
   // http://stackoverflow.com/questions/22435518/sdl2-and-glew-unable-to-get-proper-opengl-version-if-using-sdl-gl-setattribute
   std::vector<GLAttr> glAttrs;
+  // Add more as needed...
   GL_ATTR(glAttrs, SDL_GL_DOUBLEBUFFER,          impl->deviceContext.doubleBuffered ? 1 : 0);
 
   BOOST_FOREACH(auto attr, glAttrs)
@@ -152,6 +165,12 @@ void Device::Initialise(Game* const game)
     return;
   }
   atexit(SDL_Quit);
+
+  {
+    SDL_version version;
+    SDL_GetVersion(&version);
+    INFO("SDL v%d.%d.%d\n", version.major, version.minor, version.patch);
+  }
 
   char path[MAX_PATH + 1];
   const DWORD pathSize = GetModuleFileName(NULL, path, MAX_PATH);
@@ -183,6 +202,7 @@ void Device::Initialise(Game* const game)
   }
 
   INFO("OpenGL %d.%d\n", gl::sys::GetMajorVersion(), gl::sys::GetMinorVersion());
+  INFO("GLSL: %s\n", gl::GetString(gl::SHADING_LANGUAGE_VERSION));
   BOOST_FOREACH(auto attr, glAttrs)
   {
     SDL_GL_GetAttribute(attr.id, &attr.actualValue);

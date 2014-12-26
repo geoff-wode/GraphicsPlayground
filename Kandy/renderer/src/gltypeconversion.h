@@ -5,6 +5,9 @@
 #include "gl_core_3_3.hpp"
 #include <renderer\clearstate.h>
 #include <renderer\renderstate.h>
+#include <renderer\src\shaders\shadertype.h>
+#include <renderer\shaders\uniforms\uniformtypes.h>
+#include <Kandy\renderer\shaders\shadervertexattribute.h>
 
 namespace Kandy
 {
@@ -18,5 +21,10 @@ namespace Kandy
     GLenum ToGL(IndexBuffer::DataType::Enum type);
     GLenum ToGL(BufferUsageHint::Enum hint);
     GLenum ToGL(ComponentType::Enum type);
+    GLenum ToGL(ShaderType::Enum type);
+    GLenum ToGL(ShaderVertexAttribType::Enum type);
+    GLenum ToGL(ShaderUniformType::Enum type);
+
+    ShaderVertexAttribType::Enum FromGL(GLenum type);
   }
 }

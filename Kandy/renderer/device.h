@@ -36,6 +36,7 @@ namespace Kandy
       void Render(PrimitiveType::Enum primitive, int count, int offset, const RenderState& renderState);
 
       static size_t MaxVertexAttributes();
+      static size_t MaxTextureUnits();
 
 #pragma region Internal
       // Called by Game::Initialise before the main update loop is entered.

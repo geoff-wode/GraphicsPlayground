@@ -48,6 +48,15 @@
     <ClCompile Include="renderer\src\vertexarray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="renderer\src\shaders\shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\src\shaders\shaderobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\src\shaders\shaderuniformtypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\program.h">
@@ -105,6 +114,45 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="renderer\vertexarray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\src\shaders\shadertype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\scenestate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shadervertexattribute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shaderuniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\src\shaders\shaderobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shaderuniformobserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shaderuniformbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\uniforms\shaderuniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\uniforms\shaderuniformbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\uniforms\shaderuniformobserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\uniforms\uniformtypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\uniforms\alltypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

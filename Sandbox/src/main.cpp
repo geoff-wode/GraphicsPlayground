@@ -31,6 +31,24 @@ static VertexArrayAttribute vertexAttrs[] =
 };
 static const size_t attrCount = sizeof(vertexAttrs) / sizeof(vertexAttrs[0]);
 
+static const char* vertexShader =
+  "#version 330\n"
+  "VertexPosition vec4 position;\n"
+  "\n"
+  "void main()\n"
+  "{\n"
+  "  gl_Position = position; \n"
+  "};\n";
+
+
+static const char* fragmentShader =
+  "#version 330\n"
+  "out vec4 fragmentColor;\n"
+  "void main()\n"
+  "{\n"
+  "  fragmentColor = vec4(1,1,1,1);\n"
+  "};\n";
+
 //------------------------------------------------------------
 
 class MyGame : public Kandy::Core::Game
@@ -43,6 +61,7 @@ public:
   boost::shared_ptr<VertexArray> va;
   boost::shared_ptr<VertexBuffer> vb;
   boost::shared_ptr<IndexBuffer> ib;
+  Shader shader;
 
   MyGame() 
     : Kandy::Core::Game(),
@@ -71,6 +90,8 @@ public:
     va->AddAttribute(vertexAttrs[0]);
     va->AddAttribute(vertexAttrs[1]);
     va->AddAttribute(vertexAttrs[2]);
+
+    shader.Create(vertexShader, fragmentShader);
   }
 
   void Update(double elapsedMs)

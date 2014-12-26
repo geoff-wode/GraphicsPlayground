@@ -20,6 +20,9 @@
     <ClCompile Include="renderer\src\device.cpp" />
     <ClCompile Include="renderer\src\gltypeconversion.cpp" />
     <ClCompile Include="renderer\src\gl_core_3_3.cpp" />
+    <ClCompile Include="renderer\src\shaders\shader.cpp" />
+    <ClCompile Include="renderer\src\shaders\shaderobject.cpp" />
+    <ClCompile Include="renderer\src\shaders\shaderuniformtypes.cpp" />
     <ClCompile Include="renderer\src\vertexarray.cpp" />
     <ClCompile Include="renderer\src\vertexarrayattribute.cpp" />
   </ItemGroup>
@@ -39,10 +42,23 @@
     <ClInclude Include="renderer\pipelinestate\depthtest.h" />
     <ClInclude Include="renderer\pipelinestate\windingorder.h" />
     <ClInclude Include="renderer\renderstate.h" />
+    <ClInclude Include="renderer\shaders\shader.h" />
+    <ClInclude Include="renderer\shaders\shaderuniform.h" />
+    <ClInclude Include="renderer\shaders\shaderuniformbase.h" />
+    <ClInclude Include="renderer\shaders\shaderuniformobserver.h" />
+    <ClInclude Include="renderer\shaders\uniforms\alltypes.h" />
+    <ClInclude Include="renderer\shaders\uniforms\shaderuniform.h" />
+    <ClInclude Include="renderer\shaders\uniforms\shaderuniformbase.h" />
+    <ClInclude Include="renderer\shaders\uniforms\shaderuniformobserver.h" />
+    <ClInclude Include="renderer\shaders\uniforms\uniformtypes.h" />
+    <ClInclude Include="renderer\src\shaders\shaderobject.h" />
+    <ClInclude Include="renderer\src\shaders\shadertype.h" />
     <ClInclude Include="renderer\src\gltypeconversion.h" />
     <ClInclude Include="renderer\src\gl_core_3_3.hpp" />
+    <ClInclude Include="renderer\shaders\shadervertexattribute.h" />
     <ClInclude Include="renderer\vertexarray.h" />
     <ClInclude Include="renderer\vertexarrayattribute.h" />
+    <ClInclude Include="scene\scenestate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{79B88AEF-90A7-42C0-A2B4-A81DB3DB1A22}</ProjectGuid>
@@ -53,7 +69,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>

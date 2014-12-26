@@ -136,5 +136,86 @@ namespace Kandy
       ASSERT(false);
       return 0;
     }
+
+    //-------------------------------------------------------------------
+
+    GLenum ToGL(ShaderType::Enum type)
+    {
+      switch (type)
+      {
+      case ShaderType::Vertex:    return gl::VERTEX_SHADER; break;
+      case ShaderType::Fragment:  return gl::FRAGMENT_SHADER; break;
+      case ShaderType::Geometry:  return gl::GEOMETRY_SHADER; break;
+      default: break;
+      }
+      ASSERT(false);
+      return 0;
+    }
+
+    //-------------------------------------------------------------------
+
+    GLenum ToGL(ShaderVertexAttribType::Enum type)
+    {
+      switch (type)
+      {
+      case ShaderVertexAttribType::Float:         return gl::FLOAT ;break;
+      case ShaderVertexAttribType::FloatVector2:  return gl::FLOAT_VEC2 ;break;
+      case ShaderVertexAttribType::FloatVector3:  return gl::FLOAT_VEC3 ;break;
+      case ShaderVertexAttribType::FloatVector4:  return gl::FLOAT_VEC4 ;break;
+      case ShaderVertexAttribType::FloatMatrix22: return gl::FLOAT_MAT2 ;break;
+      case ShaderVertexAttribType::FloatMatrix33: return gl::FLOAT_MAT3 ;break;
+      case ShaderVertexAttribType::FloatMatrix44: return gl::FLOAT_MAT4 ;break;
+      case ShaderVertexAttribType::Int:           return gl::INT ;break;
+      case ShaderVertexAttribType::IntVector2:    return gl::INT_VEC2 ;break;
+      case ShaderVertexAttribType::IntVector3:    return gl::INT_VEC3 ;break;
+      case ShaderVertexAttribType::IntVector4:    return gl::INT_VEC4 ;break;
+      default: break;
+      }
+      ASSERT(false);
+      return 0;
+    }
+
+    //-------------------------------------------------------------------
+
+    ShaderVertexAttribType::Enum FromGL(GLenum type)
+    {
+      switch (type)
+      {
+      case gl::FLOAT:       return ShaderVertexAttribType::Float         ; break;
+      case gl::FLOAT_VEC2:  return ShaderVertexAttribType::FloatVector2  ; break;
+      case gl::FLOAT_VEC3:  return ShaderVertexAttribType::FloatVector3  ; break;
+      case gl::FLOAT_VEC4:  return ShaderVertexAttribType::FloatVector4  ; break;
+      case gl::FLOAT_MAT2:  return ShaderVertexAttribType::FloatMatrix22 ; break;
+      case gl::FLOAT_MAT3:  return ShaderVertexAttribType::FloatMatrix33 ; break;
+      case gl::FLOAT_MAT4:  return ShaderVertexAttribType::FloatMatrix44 ; break;
+      case gl::INT:         return ShaderVertexAttribType::Int           ; break;
+      case gl::INT_VEC2:    return ShaderVertexAttribType::IntVector2    ; break;
+      case gl::INT_VEC3:    return ShaderVertexAttribType::IntVector3    ; break;
+      case gl::INT_VEC4:    return ShaderVertexAttribType::IntVector4    ; break;
+      default: break;
+      }
+      ASSERT(false);
+      return ShaderVertexAttribType::Float;
+    }
+
+    //-------------------------------------------------------------------
+
+    GLenum ToGL(ShaderUniformType::Enum type)
+    {
+      switch (type)
+      {
+      case ShaderUniformType::Int:           return gl::INT; break;
+      case ShaderUniformType::Float:         return gl::FLOAT; break;
+      case ShaderUniformType::FloatVector2:  return gl::FLOAT_VEC2; break;
+      case ShaderUniformType::FloatVector3:  return gl::FLOAT_VEC3; break;
+      case ShaderUniformType::FloatVector4:  return gl::FLOAT_VEC4; break;
+      case ShaderUniformType::FloatMatrix22: return gl::FLOAT_MAT2; break;
+      case ShaderUniformType::FloatMatrix33: return gl::FLOAT_MAT3; break;
+      case ShaderUniformType::FloatMatrix44: return gl::FLOAT_MAT2; break;
+      default: break;
+      }
+      ASSERT(false);
+      return 0;
+    }
   }
 }
