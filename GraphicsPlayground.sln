@@ -67,6 +67,7 @@ Global
 		{456A3379-C3D3-46B2-A8C2-CC9CB4A1E013}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{456A3379-C3D3-46B2-A8C2-CC9CB4A1E013}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{456A3379-C3D3-46B2-A8C2-CC9CB4A1E013}.Debug|Win32.ActiveCfg = Debug|Win32
+		{456A3379-C3D3-46B2-A8C2-CC9CB4A1E013}.Debug|Win32.Build.0 = Debug|Win32
 		{456A3379-C3D3-46B2-A8C2-CC9CB4A1E013}.Debug|x86.ActiveCfg = Debug|Win32
 		{456A3379-C3D3-46B2-A8C2-CC9CB4A1E013}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{456A3379-C3D3-46B2-A8C2-CC9CB4A1E013}.Release|Mixed Platforms.Build.0 = Release|Win32

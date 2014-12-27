@@ -57,6 +57,18 @@
     <ClCompile Include="renderer\src\shaders\shaderuniformtypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scene\src\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\keycode\keyid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\keycode\keytable_win.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\program.h">
@@ -162,6 +174,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="renderer\shaders\autouniforms\define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\src\keycode\keyid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\src\keycode\keytable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\input\keycode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\input\keyboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\src\keyboardinternal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

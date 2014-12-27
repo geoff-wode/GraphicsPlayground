@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <core\game.h>
 #include <core\logging.h>
+#include "keyboardinternal.h"
 #include <renderer\device.h>
 #include <boost\foreach.hpp>
 #include <boost\scoped_ptr.hpp>
@@ -101,6 +102,7 @@ void Game::Exit()
 void Game::Initialise()
 {
   Device->Initialise(this);
+  Keyboard::Initialise();
 }
 
 //---------------------------------------------------------
@@ -126,6 +128,8 @@ static void GetSDLEvents(Game* game)
     {
     case SDL_QUIT:        game->Exit(); break;
     case SDL_WINDOWEVENT: HandleWindowEvent(game, &event); break;
+    case SDL_KEYDOWN:     Keyboard::KeyPressed((KeyCode::Enum)event.key.keysym.scancode); break;
+    case SDL_KEYUP:       Keyboard::KeyReleased((KeyCode::Enum)event.key.keysym.scancode); break;
     default: break;
     }
   }
@@ -145,5 +149,3 @@ static void HandleWindowEvent(Game* game, SDL_Event* event)
     break;
   }
 }
-
-//---------------------------------------------------------

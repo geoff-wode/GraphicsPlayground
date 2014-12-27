@@ -3,8 +3,10 @@
 #include <Kandy\core\program.h>
 #include <Kandy\core\game.h>
 #include <Kandy\core\logging.h>
+#include <Kandy\core\input\keyboard.h>
 #include <Kandy\renderer\device.h>
 #include <Kandy\renderer\clearstate.h>
+#include <Kandy\scene\scenestate.h>
 
 #include <boost\shared_ptr.hpp>
 #include <boost\make_shared.hpp>
@@ -62,6 +64,7 @@ public:
   boost::shared_ptr<VertexBuffer> vb;
   boost::shared_ptr<IndexBuffer> ib;
   Shader shader;
+  KeyboardState oldKeyState;
 
   MyGame() 
     : Kandy::Core::Game(),
@@ -92,20 +95,31 @@ public:
     va->AddAttribute(vertexAttrs[2]);
 
     shader.Create(vertexShader, fragmentShader);
+
+    oldKeyState = Keyboard::GetState();
   }
 
   void Update(double elapsedMs)
   {
-    time += elapsedMs;
-    if (time > delayMs)
-    {
-      time -= delayMs;
-      selector ^= 1;
-    }
+    //time += elapsedMs;
+    //if (time > delayMs)
+    //{
+    //  time -= delayMs;
+    //  selector ^= 1;
+    //}
 
     Game::Update(elapsedMs);
 
-    Exit();
+    const KeyboardState keyState = Keyboard::GetState();
+    if (keyState.IsKeyDown(KeyCode::KEY_Escape))
+    {
+      Exit();
+    }
+    else if (keyState.IsKeyDown(KeyCode::KEY_Space) && !oldKeyState.IsKeyDown(KeyCode::KEY_Space))
+    {
+      selector ^= 1;
+    }
+    oldKeyState = keyState;
   }
 
   void Render(double elapsedMs)

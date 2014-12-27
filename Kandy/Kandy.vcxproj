@@ -12,6 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\src\game.cpp" />
+    <ClCompile Include="core\src\keyboard.cpp" />
+    <ClCompile Include="core\src\keycode\keyid.c" />
+    <ClCompile Include="core\src\keycode\keytable_win.c" />
     <ClCompile Include="core\src\logging.cpp" />
     <ClCompile Include="core\src\main.cpp" />
     <ClCompile Include="core\src\resourceloader.cpp" />
@@ -25,12 +28,18 @@
     <ClCompile Include="renderer\src\shaders\shaderuniformtypes.cpp" />
     <ClCompile Include="renderer\src\vertexarray.cpp" />
     <ClCompile Include="renderer\src\vertexarrayattribute.cpp" />
+    <ClCompile Include="scene\src\camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\game.h" />
+    <ClInclude Include="core\input\keyboard.h" />
     <ClInclude Include="core\logging.h" />
     <ClInclude Include="core\program.h" />
     <ClInclude Include="core\resourceloader.h" />
+    <ClInclude Include="core\input\keycode.h" />
+    <ClInclude Include="core\src\keyboardinternal.h" />
+    <ClInclude Include="core\src\keycode\keyid.h" />
+    <ClInclude Include="core\src\keycode\keytable.h" />
     <ClInclude Include="renderer\buffers\indexbuffer.h" />
     <ClInclude Include="renderer\buffers\usagehint.h" />
     <ClInclude Include="renderer\buffers\vertexbuffer.h" />
@@ -61,6 +70,7 @@
     <ClInclude Include="renderer\shaders\shadervertexattribute.h" />
     <ClInclude Include="renderer\vertexarray.h" />
     <ClInclude Include="renderer\vertexarrayattribute.h" />
+    <ClInclude Include="scene\camera.h" />
     <ClInclude Include="scene\scenestate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
