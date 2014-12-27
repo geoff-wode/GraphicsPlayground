@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include <Kandy\core\resourceloader.h>
+#include <Kandy\scene\resourceloader.h>
 #include <Kandy\core\logging.h>
 
 using namespace Kandy::Core;
