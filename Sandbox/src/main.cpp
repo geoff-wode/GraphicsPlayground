@@ -101,13 +101,6 @@ public:
 
   void Update(double elapsedMs)
   {
-    //time += elapsedMs;
-    //if (time > delayMs)
-    //{
-    //  time -= delayMs;
-    //  selector ^= 1;
-    //}
-
     Game::Update(elapsedMs);
 
     const KeyboardState keyState = Keyboard::GetState();
