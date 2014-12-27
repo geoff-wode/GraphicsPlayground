@@ -42,7 +42,6 @@ static const char* vertexShader =
   "  gl_Position = position; \n"
   "};\n";
 
-
 static const char* fragmentShader =
   "#version 330\n"
   "out vec4 fragmentColor;\n"
