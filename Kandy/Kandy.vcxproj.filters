@@ -30,9 +30,6 @@
     <ClCompile Include="renderer\src\gl_core_3_3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\src\resourceloader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="renderer\src\buffers\indexbuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +66,9 @@
     <ClCompile Include="core\src\keyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scene\src\resourceloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\program.h">
@@ -84,9 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="renderer\src\gl_core_3_3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\resourceloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="renderer\devicecontext.h">
@@ -192,6 +189,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\src\keyboardinternal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\resourceloader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
