@@ -82,6 +82,7 @@ static void ApplyFacetCulling(const FacetCulling& in, FacetCulling& out);
 static void ApplyRasterisationMode(const RasterisationMode::Enum& in, RasterisationMode::Enum& out);
 static void ApplyDepthTest(const DepthTest& in, DepthTest& out);
 static void ApplyVertexArray(const VertexArray* in, size_t& activeVertexAttribCount);
+static void ApplyShader(Shader* in, Shader* out);
 
 //------------------------------------------------------------
 
@@ -254,14 +255,14 @@ void Device::Clear(const ClearState::Buffers::Enum& buffers, const ClearState& s
 
 //------------------------------------------------------------
 
-void Device::Render(PrimitiveType::Enum primitive, int count, const RenderState& renderState)
+void Device::Render(PrimitiveType::Enum primitive, int count, const RenderState& renderState, const Scene::SceneState& sceneState)
 {
-  Render(primitive, count, 0, renderState);
+  Render(primitive, count, 0, renderState, sceneState);
 }
 
 //------------------------------------------------------------
 
-void Device::Render(PrimitiveType::Enum primitive, int count, int offset, const RenderState& renderState)
+void Device::Render(PrimitiveType::Enum primitive, int count, int offset, const RenderState& renderState, const Scene::SceneState& sceneState)
 {
   ApplyRenderState(renderState, impl->renderState);
   if (renderState.vertexArray != impl->renderState.vertexArray)
@@ -269,7 +270,15 @@ void Device::Render(PrimitiveType::Enum primitive, int count, int offset, const 
     ApplyVertexArray(renderState.vertexArray, impl->activeVertexAttribCount);
     impl->renderState.vertexArray = renderState.vertexArray;
   }
-  // TODO: ApplyShader
+  
+  // Apply shader
+  if (renderState.shader != impl->renderState.shader)
+  {
+    impl->renderState.shader = renderState.shader;
+    impl->renderState.shader->Bind();
+  }
+  renderState.shader->Update(renderState, sceneState);
+
   // TODO: ApplyTextureUnits
   // TODO: ApplyFrameBuffers
 }
@@ -421,3 +430,5 @@ static void ApplyVertexArray(const VertexArray* in, size_t& activeVertexAttribCo
 
 //------------------------------------------------------------
 
+
+//------------------------------------------------------------

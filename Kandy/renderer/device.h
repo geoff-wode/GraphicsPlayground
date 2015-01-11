@@ -4,6 +4,7 @@
 #include <Kandy\renderer\devicecontext.h>
 #include <Kandy\renderer\clearstate.h>
 #include <Kandy\renderer\renderstate.h>
+#include <Kandy\scene\scenestate.h>
 
 namespace Kandy
 {
@@ -27,13 +28,13 @@ namespace Kandy
 
       // When specifying an index buffer, count specifies the number of indices to process.
       // Otherwise count specifies the number of _vertices_ to process.
-      void Render(PrimitiveType::Enum primitive, int count, const RenderState& renderState);
+      void Render(PrimitiveType::Enum primitive, int count, const RenderState& renderState, const Scene::SceneState& sceneState);
 
       // When specifying an index buffer, count specifies the number of indices to process and offset is
       // a position within the index buffer to start from.
       // Otherwise count specifies the number of _vertices_ to process and offset is a position within
       // the vertex stream to start from.
-      void Render(PrimitiveType::Enum primitive, int count, int offset, const RenderState& renderState);
+      void Render(PrimitiveType::Enum primitive, int count, int offset, const RenderState& renderState, const Scene::SceneState& sceneState);
 
       static size_t MaxVertexAttributes();
       static size_t MaxTextureUnits();

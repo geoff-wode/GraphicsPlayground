@@ -59,6 +59,7 @@ public:
   double time;
   int selector;
   ClearState clearState[2];
+  RenderState renderState;
   boost::shared_ptr<VertexArray> va;
   boost::shared_ptr<VertexBuffer> vb;
   boost::shared_ptr<IndexBuffer> ib;
@@ -95,6 +96,10 @@ public:
 
     shader.Create(vertexShader, fragmentShader);
 
+    renderState.indexBuffer = ib.get();
+    renderState.shader = &shader;
+    renderState.vertexArray = va.get();
+
     oldKeyState = Keyboard::GetState();
   }
 
@@ -117,6 +122,7 @@ public:
   void Render(double elapsedMs)
   {
     Device->Clear(ClearState::Buffers::Colour, clearState[selector]);
+    Device->Render(PrimitiveType::Triangles, 1, 0, renderState);
     Game::Render(elapsedMs);
   }
 };
