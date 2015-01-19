@@ -30,9 +30,6 @@
     <ClInclude Include="renderer\src\gl_core_3_3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderer\device.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,6 +60,18 @@
     <ClInclude Include="renderer\shaders\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="renderer\shaders\shaderuniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shaderuniformobserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shaderuniformgeneric.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\shaders\shaderuniformtype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\src\logging.cpp">
@@ -90,6 +99,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="renderer\src\shaders\shaderobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\src\shaders\shaderuniform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\src\shaders\shaderuniformgeneric.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\src\shaders\shaderuniformtype.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

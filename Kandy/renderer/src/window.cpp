@@ -20,6 +20,7 @@ WindowImpl::WindowImpl(unsigned int width, unsigned int height)
   if (!sdlWindow) { throw new std::logic_error(SDL_GetError()); }
   context = boost::make_shared<ContextImpl>(this);
   INFO("created window %p\n", this);
+  context->MakeCurrent();
 }
 
 //---------------------------------------------------------

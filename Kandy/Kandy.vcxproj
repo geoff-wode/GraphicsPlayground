@@ -87,7 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\logging.h" />
-    <ClInclude Include="core\object.h" />
     <ClInclude Include="kandy.h" />
     <ClInclude Include="renderer\buffers\bufferhint.h" />
     <ClInclude Include="renderer\buffers\vertexbuffer.h" />
@@ -95,6 +94,10 @@
     <ClInclude Include="renderer\context.h" />
     <ClInclude Include="renderer\renderstate.h" />
     <ClInclude Include="renderer\shaders\shader.h" />
+    <ClInclude Include="renderer\shaders\shaderuniform.h" />
+    <ClInclude Include="renderer\shaders\shaderuniformobserver.h" />
+    <ClInclude Include="renderer\shaders\shaderuniformgeneric.h" />
+    <ClInclude Include="renderer\shaders\shaderuniformtype.h" />
     <ClInclude Include="renderer\src\shaders\shaderimpl.h" />
     <ClInclude Include="renderer\src\shaders\shaderobject.h" />
     <ClInclude Include="renderer\src\contextimpl.h" />
@@ -111,6 +114,9 @@
     <ClCompile Include="renderer\src\gl_core_3_3.cpp" />
     <ClCompile Include="renderer\src\renderstate.cpp" />
     <ClCompile Include="renderer\src\shaders\shaderobject.cpp" />
+    <ClCompile Include="renderer\src\shaders\shaderuniform.cpp" />
+    <ClCompile Include="renderer\src\shaders\shaderuniformgeneric.cpp" />
+    <ClCompile Include="renderer\src\shaders\shaderuniformtype.cpp" />
     <ClCompile Include="renderer\src\window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

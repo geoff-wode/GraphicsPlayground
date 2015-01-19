@@ -2,6 +2,7 @@
 #include <Kandy\kandy.h>
 #include <Kandy\core\logging.h>
 #include <Kandy\renderer\device.h>
+#include <Kandy\renderer\shaders\shader.h>
 
 using namespace Kandy::Core;
 using namespace Kandy::Renderer;
@@ -26,6 +27,10 @@ public:
 
     mainWindow = Device::NewWindow(1280, 720);
     mainContext = mainWindow->GetContext();
+
+    boost::shared_ptr<Shader> shader;
+    Shader::Uniforms& uniforms = shader->GetUniforms();
+    uniforms["x"]->Apply();
   }
 };
 

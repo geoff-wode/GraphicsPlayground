@@ -47,7 +47,6 @@ boost::shared_ptr<Window> Device::NewWindow(unsigned int width, unsigned int hei
   try
   {
     window = boost::make_shared<WindowImpl>(width, height);
-    window->GetContext()->MakeCurrent();
   } catch (const std::logic_error& e)
   {
     FATAL("cannot create window: %s\n", e.what());

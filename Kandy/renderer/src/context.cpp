@@ -44,30 +44,12 @@ namespace
     GL_ATTR(SDL_GL_SHARE_WITH_CURRENT_CONTEXT)
   };
   const size_t glAttrCount = sizeof(glAttrs) / sizeof(glAttrs[0]);
-
-  //-------------------------------------------------------------------
-
-  void InitialiseGL()
-  {
-    if (!gl::sys::LoadFunctions())
-    {
-      throw new std::logic_error("cannot find GL functions");
-    }
-
-    INFO("OpenGL %d.%d\n", gl::sys::GetMajorVersion(), gl::sys::GetMinorVersion());
-    INFO("GLSL: %s\n", gl::GetString(gl::SHADING_LANGUAGE_VERSION));
-    for (size_t i = 0; i < glAttrCount; ++i)
-    {
-      int value;
-      SDL_GL_GetAttribute(glAttrs[i].id, &value);
-      INFO("%-12s: %d\n", glAttrs[i].name, value);
-    }
-  }
-
-  //-------------------------------------------------------------------
-
-  void ConfigureInitialRenderState(const RenderState& state);
 }
+
+//-------------------------------------------------------------------
+
+static void InitialiseGL();
+static void ConfigureInitialRenderState(const RenderState& state);
 
 //----------------------------------------------------
 
@@ -78,7 +60,7 @@ ContextImpl::ContextImpl(struct WindowImpl* const parentWindow)
   if (!glContext) { throw new std::logic_error(SDL_GetError()); }
   INFO("created context %p\n", this);
 
-  ::ConfigureInitialRenderState(renderState);
+  ConfigureInitialRenderState(renderState);
 }
 
 //----------------------------------------------------
@@ -117,10 +99,29 @@ void ContextImpl::Draw(const RenderState& drawState, const SceneState& sceneStat
 
 //----------------------------------------------------
 
-void ::ConfigureInitialRenderState(const RenderState& state)
+static void ConfigureInitialRenderState(const RenderState& state)
 {
   boost::call_once(InitialiseGL, onceFlag);
 
   gl::DepthMask(state.depthMask);
   gl::ColorMask(state.colourMask.r, state.colourMask.g, state.colourMask.b, state.colourMask.a);
+}
+
+//----------------------------------------------------
+
+static void InitialiseGL()
+{
+  if (!gl::sys::LoadFunctions())
+  {
+    throw new std::logic_error("cannot find GL functions");
+  }
+
+  INFO("OpenGL %d.%d\n", gl::sys::GetMajorVersion(), gl::sys::GetMinorVersion());
+  INFO("GLSL: %s\n", gl::GetString(gl::SHADING_LANGUAGE_VERSION));
+  for (size_t i = 0; i < glAttrCount; ++i)
+  {
+    int value;
+    SDL_GL_GetAttribute(glAttrs[i].id, &value);
+    INFO("%-12s: %d\n", glAttrs[i].name, value);
+  }
 }
