@@ -11,18 +11,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B886B185-CAF0-4E2F-8C46-208A71435503}</ProjectGuid>
+    <ProjectGuid>{84FA6541-52DB-45C6-B24C-AFC58A9B6059}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Kandy</RootNamespace>
+    <RootNamespace>Sandbox</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -38,11 +38,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(BUILT_LIBS)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>$(ProjectName)</TargetName>
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir);$(ProjectDir);$(IncludePath)</IncludePath>
+    <OutDir>$(EXECUTABLE_DIR)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(INTERMEDIATES_DIR)\$(ProjectName)\$(Configuration)\</IntDir>
+    <LibraryPath>$(BUILT_LIBS);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)Ivor\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(IntermediatesDir)\..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -50,20 +55,19 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Kandy.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
-    </Lib>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>$(CopySDLRuntime) $(OutDir)</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <Culture>0x0809</Culture>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -73,45 +77,23 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>Ivor.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\logging.h" />
-    <ClInclude Include="core\object.h" />
-    <ClInclude Include="kandy.h" />
-    <ClInclude Include="renderer\buffers\bufferhint.h" />
-    <ClInclude Include="renderer\buffers\vertexbuffer.h" />
-    <ClInclude Include="renderer\device.h" />
-    <ClInclude Include="renderer\context.h" />
-    <ClInclude Include="renderer\renderstate.h" />
-    <ClInclude Include="renderer\shaders\shader.h" />
-    <ClInclude Include="renderer\src\shaders\shaderimpl.h" />
-    <ClInclude Include="renderer\src\shaders\shaderobject.h" />
-    <ClInclude Include="renderer\src\contextimpl.h" />
-    <ClInclude Include="renderer\src\gl_core_3_3.hpp" />
-    <ClInclude Include="renderer\src\windowimpl.h" />
-    <ClInclude Include="renderer\window.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="core\src\logging.cpp" />
-    <ClCompile Include="core\src\application.cpp" />
-    <ClCompile Include="renderer\src\shaders\shader.cpp" />
-    <ClCompile Include="renderer\src\context.cpp" />
-    <ClCompile Include="renderer\src\device.cpp" />
-    <ClCompile Include="renderer\src\gl_core_3_3.cpp" />
-    <ClCompile Include="renderer\src\renderstate.cpp" />
-    <ClCompile Include="renderer\src\shaders\shaderobject.cpp" />
-    <ClCompile Include="renderer\src\window.cpp" />
+    <None Include="log.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
