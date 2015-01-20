@@ -13,21 +13,22 @@
 #include <boost\foreach.hpp>
 #include <Kandy\kandy.h>
 #include <Kandy\core\logging.h>
+#include <Kandy\renderer\device.h>
 
 using namespace Kandy;
 using namespace Kandy::Core;
+using namespace Kandy::Renderer;
 
 //------------------------------------------------------------
 
 struct Application::Impl
 {
   Impl()
-    : running(false)
+    : running(true)
   {
   }
   bool running;
 };
-
 
 //------------------------------------------------------------
 
@@ -56,6 +57,12 @@ Application::~Application()
 
 void Application::Run()
 {
+  if (!Device::Initialise())
+  {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "ERROR", "Cannot start application - refer to log for details", NULL);
+    return;
+  }
+
   Initialise();
 
   // Enter the loop...
@@ -97,6 +104,7 @@ void Application::Run()
       Render(lag / millisecondsPerFrame);
       PostRender();
     }
+    Device::SwapBuffers();
 
     // Yield to whatever else is going on in the PC:
     SDL_Delay(1);

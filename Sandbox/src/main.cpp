@@ -12,25 +12,28 @@ using namespace Kandy::Renderer;
 class MyApp : public Application
 {
 public:
-  boost::shared_ptr<Window> mainWindow;
   boost::shared_ptr<Context> mainContext;
+  ClearState clearState;
 
   MyApp() 
     : Application()
   {
     INFO("started\n");
+  
+    clearState.colour = glm::vec4(1,0,0,1);
+    clearState.buffers = ClearState::Buffers::ColourDepth;
   }
 
   virtual void Initialise()
   {
     Device::Initialise();
 
-    mainWindow = Device::NewWindow(1280, 720);
-    mainContext = mainWindow->GetContext();
+    mainContext = Device::GetContext();
+  }
 
-    boost::shared_ptr<Shader> shader;
-    Shader::Uniforms& uniforms = shader->GetUniforms();
-    uniforms["x"]->Apply();
+  virtual void Render(double frameInterpolation)
+  {
+    mainContext->Clear(clearState);
   }
 };
 

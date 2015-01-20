@@ -13,14 +13,20 @@ using namespace Kandy::Renderer;
 
 //---------------------------------------------------------
 
-WindowImpl::WindowImpl(unsigned int width, unsigned int height)
-  : sdlWindow(SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
-      SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN))
+WindowImpl::WindowImpl(unsigned int width, unsigned int height, WindowMode::Enum mode)
 {
+  Uint32 flags = SDL_WINDOW_OPENGL;
+  switch (mode)
+  {
+  case WindowMode::FakeFullScreen: flags |= SDL_WINDOW_FULLSCREEN_DESKTOP; break;
+  case WindowMode::RealFullScreen: flags |= SDL_WINDOW_FULLSCREEN; break;
+  case WindowMode::Windowed:       break;
+  default: ASSERT(false);
+  }
+
+  sdlWindow = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
   if (!sdlWindow) { throw new std::logic_error(SDL_GetError()); }
-  context = boost::make_shared<ContextImpl>(this);
   INFO("created window %p\n", this);
-  context->MakeCurrent();
 }
 
 //---------------------------------------------------------
@@ -33,9 +39,9 @@ WindowImpl::~WindowImpl()
 
 //---------------------------------------------------------
 
-boost::shared_ptr<Context> WindowImpl::GetContext()
+void WindowImpl::Swap()
 {
-  return context;
+  SDL_GL_SwapWindow(sdlWindow);
 }
 
 //---------------------------------------------------------

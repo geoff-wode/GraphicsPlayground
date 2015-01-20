@@ -87,9 +87,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\logging.h" />
+    <ClInclude Include="core\rectangle.h" />
     <ClInclude Include="kandy.h" />
     <ClInclude Include="renderer\buffers\bufferhint.h" />
     <ClInclude Include="renderer\buffers\vertexbuffer.h" />
+    <ClInclude Include="renderer\clearstate.h" />
     <ClInclude Include="renderer\device.h" />
     <ClInclude Include="renderer\context.h" />
     <ClInclude Include="renderer\renderstate.h" />
@@ -108,6 +110,7 @@
   <ItemGroup>
     <ClCompile Include="core\src\logging.cpp" />
     <ClCompile Include="core\src\application.cpp" />
+    <ClCompile Include="core\src\rectangle.cpp" />
     <ClCompile Include="renderer\src\shaders\shader.cpp" />
     <ClCompile Include="renderer\src\context.cpp" />
     <ClCompile Include="renderer\src\device.cpp" />

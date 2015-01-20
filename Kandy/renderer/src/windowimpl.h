@@ -17,16 +17,22 @@ namespace Kandy
     struct WindowImpl : public Window
     {
       SDL_Window* sdlWindow;
-      boost::shared_ptr<ContextImpl> context;
 
-      WindowImpl(unsigned int width, unsigned int height);
+      WindowImpl(unsigned int width, unsigned int height, WindowMode::Enum mode);
       virtual ~WindowImpl();
-      virtual boost::shared_ptr<Context> GetContext();
+
+      /**
+        @breif Swap the front- and back-buffer.
+        */
+      void Swap();
+
+      // Implementation of the external API...
       virtual void Show();
       virtual void Hide();
       virtual bool IsVisible() const;
       virtual void SetMode(WindowMode::Enum mode);
       virtual bool IsFullScreen() const;
+
     };
   }
 }

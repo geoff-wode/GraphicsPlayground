@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <Kandy\renderer\context.h>
-#include <Kandy\renderer\renderstate.h>
+#include "windowimpl.h"
 
 namespace Kandy
 {
@@ -10,13 +10,18 @@ namespace Kandy
   {
     struct ContextImpl : public Context
     {
-      struct WindowImpl* const parentWindow;
+      WindowImpl* const parentWindow;
       SDL_GLContext glContext;
-      RenderState   renderState;
+      RenderState   currentRenderState;
+      ClearState    currentClearState;
+      Core::Rectangle viewport;
 
-      ContextImpl(struct WindowImpl* const parentWindow);
+      ContextImpl(WindowImpl* const parentWindow);
       virtual ~ContextImpl();
       
+      virtual void SetViewport(const Core::Rectangle& rectangle);
+      virtual Core::Rectangle GetViewport() const;
+
       virtual void MakeCurrent();
       virtual Window& GetParentWindow() const;
       virtual void Clear(const ClearState& clearState);

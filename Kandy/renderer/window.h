@@ -11,12 +11,11 @@ namespace Kandy
 {
   namespace Renderer
   {
-    struct Context;
-
+    /**
+      @brief The window representing the visual output of the @see Application.
+      */
     struct Window
     {
-      virtual boost::shared_ptr<Context> GetContext() = 0;
-
       virtual void Show() = 0;
       virtual void Hide() = 0;
       virtual bool IsVisible() const = 0;
