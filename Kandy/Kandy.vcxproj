@@ -83,14 +83,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="core\application.h" />
+    <ClInclude Include="core\input\keyboard.h" />
+    <ClInclude Include="core\input\keyboardstate.h" />
+    <ClInclude Include="core\input\keycode.h" />
     <ClInclude Include="core\logging.h" />
     <ClInclude Include="core\rectangle.h" />
+    <ClInclude Include="core\src\input\keyboardimpl.h" />
     <ClInclude Include="kandy.h" />
-    <ClInclude Include="renderer\buffers\bufferhint.h" />
-    <ClInclude Include="renderer\buffers\vertexbuffer.h" />
     <ClInclude Include="renderer\clearstate.h" />
     <ClInclude Include="renderer\device.h" />
     <ClInclude Include="renderer\context.h" />
@@ -108,6 +108,8 @@
     <ClInclude Include="renderer\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\src\input\keyboard.cpp" />
+    <ClCompile Include="core\src\input\keyboardstate.cpp" />
     <ClCompile Include="core\src\logging.cpp" />
     <ClCompile Include="core\src\application.cpp" />
     <ClCompile Include="core\src\rectangle.cpp" />
